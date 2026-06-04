@@ -4,9 +4,12 @@ const app = express();
 
 //used to parse req.body in express -> post or put
 const bodyParser = require("body-parser");
-
 // Specifically parse json data & add it to the request.body object
 app.use(bodyParser.json());
+
+// however bodyparser is outdated - we use this instead
+app.use(express.json());    //This is built into Express.
+
 
 // Activate the server
 app.listen(3000, () => {
@@ -24,3 +27,13 @@ app.post("/api/cars", (request, response) => {
   console.log(brand);
   response.send("Car Submitted successfully");
 });
+
+const mongoose = require("mongoose");
+mongoose
+  .connect("mongodb://localhost:27017/Cars")
+  .then(() => {
+    console.log("MongoDB connected successfully");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
