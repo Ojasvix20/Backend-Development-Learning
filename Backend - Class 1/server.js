@@ -1,18 +1,18 @@
 //Server instantiate
 const express = require("express");
-const app = express();
+const app = express();    //creating server instance
 
 //used to parse req.body in express -> post or put
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 // Specifically parse json data & add it to the request.body object
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 // however bodyparser is outdated - we use this instead
-app.use(express.json());    //This is built into Express.
 
+app.use(express.json()); //This is built into Express.
 
 // Activate the server
-app.listen(3000, () => {
+app.listen(3000, () => {          //to start the server on port no. 3000
   console.log("Server started at port no. 3000");
 });
 
@@ -26,6 +26,9 @@ app.post("/api/cars", (request, response) => {
   console.log(name);
   console.log(brand);
   response.send("Car Submitted successfully");
+});
+app.get("/api/cars", (req, res) => {
+  res.send("Cars API is working!");
 });
 
 const mongoose = require("mongoose");
