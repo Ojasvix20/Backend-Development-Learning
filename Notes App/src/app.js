@@ -1,61 +1,52 @@
-//main objective of this file is to create the server
 const express = require("express");
+const noteModel = require("./models/note.model");
+
 const app = express();
+app.use(express.json());
 
-/* --this is our note structure: 
-note={
-    title:"my first note:,
-    description:"this is my first note"
-}
+// note = {title, description}+
+
+/*
+
+POST /notes => Create a note
+GET /notes => Get all note
+DELETE /notes:id => Delete a note
+PATCH /notes:id => Update a note
+
 */
-const notes = []; //array of notes
-//  since theres no database rn, if server restarts, the data is gone. because the array exists on ram... and every restart means new ram assigned.
 
-app.use(express.json()); //middleware to make the body of request readable for express
-
-// POST /notes
-
-app.post("/notes", (req, res) => {
-  notes.push(req.body);
+app.post("/notes", async (req, res) => {
+  const data = req.body; //{title, description}
+  await noteModel.create({
+    title: data.title,
+    description: data.description,
+  });
 
   res.status(201).json({
-    message: "note created successfully",
+    message: "Note Created!",
   });
-}); 
+});
 
-// GET /notes
+app.get("/notes", async (req, res) => {
+  const notes = await noteModel.find(); //.find() - returns array of objects (notes) from db
 
-app.get("/notes", (req, res) => {
+  //we can also add conditions to find() like particular title
+  // const notes = await noteModel.find({
+  //     title:"test_title"
+  // });
+
+  //   const notes = await noteModel.findOne({
+  //     title: "test_title",
+  //   }); //.findOne() - returns the object (note) from db which match the conditions
+
+  //find() => [{},{},{}] or []
+  //findOne() => {} or null
   res.status(200).json({
-    message: "notes fetched successfully",
+    message: "Notes fetched successfully",
     notes: notes,
   });
 });
 
-//DELETE a note -> (delete /notes/:index)
-
-app.delete("/notes/:index", (req, res) => {
-  //over here, full colon tells that the value is dynamic
-
-  const index = req.params.index;
-
-  delete notes[index];
-
-  res.status(200).json({
-    message: "Note deleted successfully",
-  });
-});
-
-//PATCH - update existing data on the given index
-
-app.patch("/notes/:index", (req, res) => {
-  const index = req.params.index;
-  const description = req.body.description;
-
-  notes[index].description = description;
-  res.status(200).json({
-    message: `note ${index} updated successfully`,
-  });
-});
+app.delete("/notes:id", async (req, res) => {});    //resume from 2:50
 
 module.exports = app;
