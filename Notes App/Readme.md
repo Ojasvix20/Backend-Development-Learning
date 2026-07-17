@@ -15,3 +15,10 @@ Delete data from the server
 ### PATCH:
 
 Update data that exists on the server
+
+# DATABAE Operations:
+
+### C -> Create
+### R -> Read
+### U -> Update
+### D -> Delete

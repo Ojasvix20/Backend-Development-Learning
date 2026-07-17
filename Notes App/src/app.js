@@ -21,7 +21,7 @@ app.post("/notes", (req, res) => {
   res.status(201).json({
     message: "note created successfully",
   });
-});
+}); 
 
 // GET /notes
 
