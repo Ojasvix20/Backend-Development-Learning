@@ -47,6 +47,30 @@ app.get("/notes", async (req, res) => {
   });
 });
 
-app.delete("/notes:id", async (req, res) => {});    //resume from 2:50
+app.delete("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  await noteModel.findOneAndDelete({
+    _id: id,
+  });
+  res.status(200).json({
+    message: "Note Deleted Successfully",
+  });
+});
+
+app.patch("/notes/:id", async (req, res) => {
+  const id = req.params.id;
+  await noteModel.findOneAndUpdate(
+    {
+      _id: id,
+    },
+    {
+      description: req.body.description,
+    },
+  );
+
+  res.status(200).json({
+    message: "Note updated successfully",
+  });
+});
 
 module.exports = app;

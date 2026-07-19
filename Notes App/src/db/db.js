@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 async function connectDB() {
   try {
     await mongoose.connect(
-      "mongodb+srv://Ojasvi:RwH6Xt7nzx3zeDK1@cluster0.zdwd0lc.mongodb.net/backendDB",
+      process.env.MONGO_URI,
     );
     console.log("DB Connected Successfully");
   } catch (err) {
